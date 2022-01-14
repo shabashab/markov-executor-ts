@@ -4,31 +4,46 @@ const executeOperation = (input: string, operation: Operation): string => {
   return input.replace(operation.from, operation.to);
 };
 
-export const executeOperations = (
+const executeOperations = (input: string, operations: Operation[]): {
+	output: string,
+	continueLoop: boolean
+}=> {
+	let continueLoop = true;
+
+	for (const operation of operations) {
+		const operationResult = executeOperation(input, operation);
+		const operationSucceeded = operationResult !== input;
+
+		if (!operationSucceeded) continue;
+
+		input = operationResult;
+		if (operation.isFinal) continueLoop = false;
+
+		return {
+			output: input,
+			continueLoop
+		};
+	}
+
+	return {
+		output: input,
+		continueLoop: false
+	};
+}
+
+export const executeAlgorithm = (
   input: string,
   operations: Operation[]
 ): string => {
-  let isLooping = true;
+	let data: string = input;
 
-  while (isLooping) {
-    let executedOperationsCount = 0;
+  while (true) {
+		const executionResult = executeOperations(data, operations);
+		data = executionResult.output;
 
-    for (const operation of operations) {
-      const operationResult = executeOperation(input, operation);
-      const operationSucceeded = operationResult !== input;
-
-      if (!operationSucceeded) continue;
-
-      executedOperationsCount++;
-      input = operationResult;
-
-      if (operation.isFinal) isLooping = false;
-
-      break;
-    }
-
-    if (executedOperationsCount == 0) break;
+		if(!executionResult.continueLoop)
+			break;
   }
 
-  return input;
+  return data;
 };

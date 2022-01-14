@@ -2,7 +2,7 @@ import * as yargs from "yargs";
 import * as fs from "fs";
 
 import { parseAlgorithm } from "./parser";
-import { executeOperations } from "./executer";
+import { executeAlgorithm } from "./executer";
 import { Operation } from "./operation";
 
 yargs
@@ -77,7 +77,7 @@ yargs
         return;
       }
 
-      const operationsResult = executeOperations(inputContents, ops);
+      const operationsResult = executeAlgorithm(inputContents, ops);
       console.log("Result: \n" + operationsResult);
     }
   )
