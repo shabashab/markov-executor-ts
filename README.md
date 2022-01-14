@@ -30,6 +30,8 @@ In order to run the program, you need to specify such arguments
 
 ## Algorithm format
 
+### Algorithm entries
+
 The algorithms are written in the format:
 ```
 "<from>" -> "<to>"
@@ -41,4 +43,13 @@ If the `<to>` ends with the `.`, it indicates that the algorithm will finish aft
 
 Every line in the algorithm file is only one replacement written in a format stated above.
 
+### Comments
 
+You can define comments in an algorithm by starting the line with `//`
+
+Example:
+
+```
+//The input1 string converts to output1 string
+"input1" -> "output1"
+```
