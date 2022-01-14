@@ -1,4 +1,5 @@
 import { Operation } from "./operation";
+import { Algorithm } from "./algorithm";
 
 const executeOperation = (input: string, operation: Operation): string => {
   return input.replace(operation.from, operation.to);
@@ -7,7 +8,7 @@ const executeOperation = (input: string, operation: Operation): string => {
 const executeOperations = (input: string, operations: Operation[]): {
 	output: string,
 	continueLoop: boolean
-}=> {
+} => {
 	let continueLoop = true;
 
 	for (const operation of operations) {
@@ -33,8 +34,9 @@ const executeOperations = (input: string, operations: Operation[]): {
 
 export const executeAlgorithm = (
   input: string,
-  operations: Operation[]
+  algorithm: Algorithm
 ): string => {
+	const operations = algorithm.operations;
 	let data: string = input;
 
   while (true) {

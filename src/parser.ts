@@ -1,4 +1,5 @@
 import { Operation } from "./operation";
+import { Algorithm } from "./algorithm";
 
 class ParsingError extends Error {
   constructor(cause: string) {
@@ -63,7 +64,7 @@ const createOperationFromLine = (line: string): Operation => {
   };
 };
 
-export const parseAlgorithm = (input: string): Operation[] => {
+export const parseAlgorithm = (input: string): Algorithm => {
   const lines = input.split("\n");
   const operations: Operation[] = [];
 
@@ -76,5 +77,5 @@ export const parseAlgorithm = (input: string): Operation[] => {
     operations.push(createOperationFromLine(line));
   }
 
-  return operations;
+  return { operations };
 };

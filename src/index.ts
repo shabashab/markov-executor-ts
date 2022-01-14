@@ -3,7 +3,7 @@ import * as fs from "fs";
 
 import { parseAlgorithm } from "./parser";
 import { executeAlgorithm } from "./executer";
-import { Operation } from "./operation";
+import { Algorithm } from "./algorithm";
 
 yargs
   .scriptName("markov")
@@ -68,16 +68,17 @@ yargs
       }
 
       const algorithmFileContents = fs.readFileSync(fileName).toString();
-      let ops: Operation[] = [];
+
+			let algorithm: Algorithm;
 
       try {
-        ops = parseAlgorithm(algorithmFileContents);
+        algorithm = parseAlgorithm(algorithmFileContents);
       } catch (e: any) {
         console.log(e.message);
         return;
       }
 
-      const operationsResult = executeAlgorithm(inputContents, ops);
+      const operationsResult = executeAlgorithm(inputContents, algorithm);
       console.log("Result: \n" + operationsResult);
     }
   )
