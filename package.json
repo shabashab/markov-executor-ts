@@ -1,6 +1,6 @@
 {
   "name": "markov-executor-ts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple cli program that parses and executes markov normal algorithms ",
   "main": "dist/index.js",
   "scripts": {
