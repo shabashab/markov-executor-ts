@@ -1,3 +1,4 @@
+//Removes the last char of the word in alphabet {a, b}
 "xa" -> "ax"
 "xb" -> "bx"
 "bx" -> "."
