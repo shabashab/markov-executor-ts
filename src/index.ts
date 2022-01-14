@@ -9,12 +9,12 @@ yargs
   .scriptName("markov")
   .usage("$0 [args]")
   .command(
-    "$0 [fileName] [input] [inputFileName]",
+    "$0 [algorithm] [input] [inputFile] [outputFile] [rewrite]",
     "The default command",
     (yargs) => {
       yargs.positional("fileName", {
         type: "string",
-        describe: "the path to input file",
+        describe: "the path to algorithm file",
       });
       yargs.positional("input", {
         type: "string",
@@ -24,21 +24,29 @@ yargs
         type: "string",
         describe: "the file name for input for the algorithm",
       });
+      yargs.positional("outputFile", {
+        type: "string",
+        describe: "the file the file in which program will write the output",
+      });
+      yargs.positional("rewrite", {
+        type: "boolean",
+        describe: "if the flag is specified, than outputFile (if exists) will be rewritten",
+      });
     },
     (argv) => {
-      if (!argv.fileName) {
-        console.log("No file name was specified!");
+      if (!argv.algorithm) {
+        console.log("No algorithm file name was specified!");
         return;
       }
 
-      if (!(argv.input || argv.inputFileName)) {
-        console.log("No input or input file name was specified!");
+      if (!(argv.input || argv.inputFile)) {
+        console.log("No input or input file was specified!");
         return;
       }
 
       if (argv.input && argv.inputFileName) {
         console.log(
-          "Can't have input and input file name specified simoultaneously. Please specify only one of the arguments"
+          "Can't have input and input file specified simoultaneously. Please specify only one of the arguments"
         );
         return;
       }
@@ -49,8 +57,8 @@ yargs
         inputContents = <string>argv.input;
       }
 
-      if (argv.inputFileName) {
-        const fileName = <string>argv.inputFileName;
+      if (argv.inputFile) {
+        const fileName = <string>argv.inputFile;
 
         if (!fs.existsSync(fileName)) {
           console.log("The specified input file does not exist");
@@ -60,12 +68,21 @@ yargs
         inputContents = fs.readFileSync(fileName).toString();
       }
 
-      const fileName: string = <string>argv.fileName;
+      const fileName: string = <string>argv.algorithm;
 
       if (!fs.existsSync(fileName)) {
         console.log("The specified algorithm file does not exist");
         return;
       }
+
+			if(argv.outputFile) {
+				const outputFile = <string>argv.outputFile;
+
+				if(fs.existsSync(outputFile) && !argv.rewrite) {
+					console.log("The output file with specified name already exists. If you want to rewrite it, please run the program with --rewrite flag");	
+					return;
+				}
+			}
 
       const algorithmFileContents = fs.readFileSync(fileName).toString();
 
@@ -79,7 +96,12 @@ yargs
       }
 
       const operationsResult = executeAlgorithm(inputContents, algorithm);
-      console.log("Result: \n" + operationsResult);
+
+			if(argv.outputFile) {
+				fs.writeFileSync(<string>argv.outputFile, operationsResult);
+			} else {
+				console.log("Result: \n" + operationsResult);
+			}
     }
   )
   .help().argv;
