@@ -1,5 +1,5 @@
 export interface Operation {
-	from: string;
-	to: string;
-	final: boolean;
+  from: string;
+  to: string;
+  final: boolean;
 }
