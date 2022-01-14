@@ -1,5 +1,5 @@
 export interface Operation {
-  from: string;
+	from: RegExp;
   to: string;
-  final: boolean;
+  isFinal: boolean;
 }

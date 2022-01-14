@@ -1,17 +1,6 @@
 import { Operation } from "./operation";
 
 const executeOperation = (input: string, operation: Operation): string => {
-  if (operation.from.startsWith(" ")) {
-    const content =
-      operation.from.length == 1
-        ? ""
-        : operation.from.substring(1, operation.from.length);
-
-    const regexp = new RegExp("^" + content);
-
-    return input.replace(regexp, operation.to);
-  }
-
   return input.replace(operation.from, operation.to);
 };
 
@@ -20,7 +9,6 @@ export const executeOperations = (
   operations: Operation[]
 ): string => {
   let isLooping = true;
-	console.log(input);
 
   while (isLooping) {
     let executedOperationsCount = 0;
@@ -34,8 +22,7 @@ export const executeOperations = (
       executedOperationsCount++;
       input = operationResult;
 
-			console.log(input);
-      if (operation.final) isLooping = false;
+      if (operation.isFinal) isLooping = false;
 
       break;
     }

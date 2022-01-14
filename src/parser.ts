@@ -6,7 +6,21 @@ class ParsingError extends Error {
   }
 }
 
-const parseOperation = (line: string): Operation => {
+interface OperationData {
+	from: string;
+	to: string
+}
+
+const createStartOfWordRegExp = (from: string): RegExp => {
+	const regexpContent =
+		from.length == 1
+			? ""
+			: from.substring(1, from.length);
+
+	return new RegExp("^" + regexpContent);
+};
+
+const parseOperation = (line: string): OperationData => {
   const regex = /\"(?<from>.+)\" *(->) *\"(?<to>.+)\"/;
 
   const match = line.match(regex);
@@ -15,19 +29,37 @@ const parseOperation = (line: string): Operation => {
     throw new ParsingError("Invalid input line format: " + line);
   }
 
-  let from = match.groups.from;
-  let to = match.groups.to;
+  const from = match.groups.from;
+  const to = match.groups.to;
+
+	return {
+		from,
+		to
+	};
+}
+
+const createOperationFromLine = (line: string): Operation => {
+	const operationData = parseOperation(line);
+
+	let from: RegExp;
+
   let isOperationFinal = false;
 
-  if (to.charAt(to.length - 1) == ".") {
+  if (operationData.to.charAt(operationData.to.length - 1) == ".") {
     isOperationFinal = true;
-    to = to.substring(0, to.length - 1);
+    operationData.to = operationData.to.substring(0, operationData.to.length - 1);
   }
+
+	if(operationData.from.startsWith(" ")) {
+		from = createStartOfWordRegExp(operationData.from);
+	} else {
+		from = new RegExp(operationData.from);
+	}
 
   return {
     from,
-    to,
-    final: isOperationFinal,
+		to: operationData.to,
+    isFinal: isOperationFinal
   };
 };
 
@@ -41,7 +73,7 @@ export const parseAlgorithm = (input: string): Operation[] => {
     if (lineData == "") continue;
 		if (lineData.startsWith("//")) continue;
 
-    operations.push(parseOperation(line));
+    operations.push(createOperationFromLine(line));
   }
 
   return operations;
