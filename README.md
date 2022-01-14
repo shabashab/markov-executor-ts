@@ -24,9 +24,11 @@ yarn run build
 
 ## Running
 
-In order to run the program, you need to specify such arguments
+Arguments:
 - `fileName` - the file name or path to the algorithm
 - `input` or `inputFileName` - the input to the algorithm or the file name of the file that has the input for the algorithm
+- `outputFile` - the file the algorithm output will be written in (if not specified, output will be displayed in stdout)
+- `rewrite` - if the specified outputFile already exists, allows the program to rewrite it
 
 ## Algorithm format
 
