@@ -39,6 +39,7 @@ export const parseAlgorithm = (input: string): Operation[] => {
     const lineData = line.trim();
 
     if (lineData == "") continue;
+		if (lineData.startsWith("//")) continue;
 
     operations.push(parseOperation(line));
   }
