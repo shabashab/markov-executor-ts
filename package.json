@@ -1,14 +1,14 @@
 {
-  "name": "markov",
-  "version": "1.0.0",
-  "description": "",
+  "name": "markov-executor-ts",
+  "version": "0.1.0",
+  "description": "A simple cli program that parses and executes markov normal algorithms ",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
 		"format": "prettier --write src/"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "shabashab",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^17.0.8",
     "@types/yargs": "^17.0.8",
