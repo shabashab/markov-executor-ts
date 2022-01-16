@@ -22,7 +22,7 @@ const createStartOfWordRegExp = (from: string): RegExp => {
 };
 
 const parseOperation = (line: string): OperationData => {
-  const regex = /\"(?<from>.+)\" *(->) *\"(?<to>.+)\"/;
+  const regex = /\"(?<from>.+)\" *(->) *\"(?<to>.*)\"/;
 
   const match = line.match(regex);
 
