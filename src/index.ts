@@ -1,10 +1,10 @@
 import * as yargs from "yargs";
 import * as fs from "fs";
-import * as path from "path";
 
 import { parseAlgorithm } from "./parser";
-import { executeAlgorithm } from "./executer";
+import { AlgorithmExecutionResult, executeAlgorithm } from "./executer";
 import { Algorithm } from "./algorithm";
+import { measureExecutionTime } from "helpers/measureExecutionTime";
 
 yargs
   .scriptName("markov")
@@ -99,13 +99,11 @@ yargs
         return;
       }
 
-			const startTime = performance.now();
+			let algorithmResult!: AlgorithmExecutionResult;
 
-      const algorithmResult = executeAlgorithm(inputContents, algorithm);
-
-			const endTime = performance.now();
-
-			const executionTime = endTime - startTime;
+			const executionTime = measureExecutionTime(() => {
+				 algorithmResult = executeAlgorithm(inputContents, algorithm);
+			});
 
 			console.log("Executed successfully in " + executionTime.toFixed(4) + "ms");
 			console.log("Steps count: " + algorithmResult.stepsCount);
