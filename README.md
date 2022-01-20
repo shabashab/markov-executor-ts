@@ -2,33 +2,19 @@
 
 This simple program allows you to execute markov's normal algorithms.
 
-## Building
+## Running the application
 
-Run the `build` script using your package manager (originally `pnpm`).
-
-Example for `npm`:
-```
-npm run build
-```
-
-Example for `pnpm`:
-```
-pnpm run build
-```
-
-Example for `yarn`:
-```
-yarn run build
-```
+You can download the latest release for your operating system from release page of the repository
 
 
-## Running
-
-Arguments:
-- `fileName` - the file name or path to the algorithm
-- `input` or `inputFileName` - the input to the algorithm or the file name of the file that has the input for the algorithm
+The following arguments can be used to execute program:
+- `algorithm` - the file name or path to the algorithm
+- `input` - the input that is passed to the algorithm
+- `inputFileName` - the name of the file in which input is stored
 - `outputFile` - the file the algorithm output will be written in (if not specified, output will be displayed in stdout)
 - `rewrite` - if the specified outputFile already exists, allows the program to rewrite it
+
+`algorithm` argument is mandatory. Also `input` or `inputFileName` should be specified
 
 ## Algorithm format
 
@@ -55,3 +41,24 @@ Example:
 //The input1 string converts to output1 string
 "input1" -> "output1"
 ```
+
+## Building
+
+Run the `build` script using your package manager (originally `pnpm`).
+
+Example for `npm`:
+```
+npm run build
+```
+
+Example for `pnpm`:
+```
+pnpm run build
+```
+
+Example for `yarn`:
+```
+yarn run build
+```
+
+In order to create binaries just run the `bin` script after running the	`build` script. The script will create binaries in bin/ directory
