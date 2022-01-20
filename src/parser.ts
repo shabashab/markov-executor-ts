@@ -1,5 +1,5 @@
-import { Operation } from "./operation";
-import { Algorithm } from "./algorithm";
+import { Operation } from "./models/operation";
+import { Algorithm } from "./models/algorithm";
 
 class ParsingError extends Error {
   constructor(cause: string) {
