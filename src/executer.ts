@@ -17,26 +17,25 @@ const executeOperations = (
   output: string;
   continueLoop: boolean;
 } => {
-  let continueLoop = true;
+
+	let output = input;
+  let continueLoop = false;
 
   for (const operation of operations) {
-    const operationResult = executeOperation(input, operation);
+    const operationResult = executeOperation(output, operation);
     const operationSucceeded = operationResult !== input;
 
     if (!operationSucceeded) continue;
 
-    input = operationResult;
-    if (operation.isFinal) continueLoop = false;
+    output = operationResult;
+		continueLoop = !operation.isFinal;
 
-    return {
-      output: input,
-      continueLoop,
-    };
+		break;
   }
 
   return {
-    output: input,
-    continueLoop: false,
+    output,
+    continueLoop,
   };
 };
 
@@ -49,15 +48,14 @@ export const executeAlgorithm = (
 
 	let stepsCount = 0;
 
-  while (true) {
-		stepsCount++;
-    const executionResult = executeOperations(data, operations);
+  for (let continueLoop = true; continueLoop; stepsCount++) {
+    const operationsResult = executeOperations(data, operations);
+		continueLoop = operationsResult.continueLoop;
 
-		if(executionResult.output == data) break;
+		const output = operationsResult.output;
 
-    data = executionResult.output;
-
-    if (!executionResult.continueLoop) break;
+		if(output == data) break;
+    data = output;
   }
 
   return {
