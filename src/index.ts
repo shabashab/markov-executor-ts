@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { parseAlgorithm } from "./parser";
 import { AlgorithmExecutionResult, executeAlgorithm } from "./executer";
 import { Algorithm } from "./algorithm";
-import { measureExecutionTime } from "helpers/measureExecutionTime";
+import { measureExecutionTime } from "./helpers/measureExecutionTime";
 
 yargs
   .scriptName("markov")
