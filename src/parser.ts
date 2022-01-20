@@ -8,17 +8,39 @@ class ParsingError extends Error {
 }
 
 interface OperationData {
-	from: string;
-	to: string
+  from: string;
+  to: string;
 }
 
 const createStartOfWordRegExp = (from: string): RegExp => {
-	const regexpContent =
-		from.length == 1
-			? ""
-			: from.substring(1, from.length);
+  const regexpContent = from.length == 1 ? "" : from.substring(1, from.length);
 
-	return new RegExp("^" + regexpContent);
+  return new RegExp("^" + regexpContent);
+};
+
+const replaceRegexSpecialChars = (input: string): string => {
+	let outputString = "";
+
+	const specialCharacters = [ 
+		".", "+", "?", "*", "^", "{", "}", "[", "]", "(", ")", "|", "\\"
+	];
+
+	for(const inputChar of input) {
+		if(specialCharacters.find(value => value == inputChar) !== undefined) {
+			outputString += "\\";
+		}
+
+		outputString += inputChar;
+	}
+
+  return outputString;
+};
+
+const createOperationInputRegex = (input: string): RegExp => {
+  const regexString = replaceRegexSpecialChars(input);
+
+  if (regexString.startsWith(" ")) return createStartOfWordRegExp(regexString);
+  return new RegExp(regexString);
 };
 
 const parseOperation = (line: string): OperationData => {
@@ -33,34 +55,33 @@ const parseOperation = (line: string): OperationData => {
   const from = match.groups.from;
   const to = match.groups.to;
 
-	return {
-		from,
-		to
-	};
-}
+  return {
+    from,
+    to,
+  };
+};
 
 const createOperationFromLine = (line: string): Operation => {
-	const operationData = parseOperation(line);
+  const operationData = parseOperation(line);
 
-	let from: RegExp;
+  let from: RegExp;
 
   let isOperationFinal = false;
 
   if (operationData.to.charAt(operationData.to.length - 1) == ".") {
     isOperationFinal = true;
-    operationData.to = operationData.to.substring(0, operationData.to.length - 1);
+    operationData.to = operationData.to.substring(
+      0,
+      operationData.to.length - 1
+    );
   }
 
-	if(operationData.from.startsWith(" ")) {
-		from = createStartOfWordRegExp(operationData.from);
-	} else {
-		from = new RegExp(operationData.from);
-	}
+  from = createOperationInputRegex(operationData.from);
 
   return {
     from,
-		to: operationData.to,
-    isFinal: isOperationFinal
+    to: operationData.to,
+    isFinal: isOperationFinal,
   };
 };
 
@@ -72,7 +93,7 @@ export const parseAlgorithm = (input: string): Algorithm => {
     const lineData = line.trim();
 
     if (lineData == "") continue;
-		if (lineData.startsWith("//")) continue;
+    if (lineData.startsWith("//")) continue;
 
     operations.push(createOperationFromLine(line));
   }

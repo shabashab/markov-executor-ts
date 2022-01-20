@@ -1,5 +1,5 @@
-import { Operation } from "./operation"
+import { Operation } from "./operation";
 
 export interface Algorithm {
-	operations: Operation[];
+  operations: Operation[];
 }

@@ -1,5 +1,6 @@
 import * as yargs from "yargs";
 import * as fs from "fs";
+import * as path from "path";
 
 import { parseAlgorithm } from "./parser";
 import { executeAlgorithm } from "./executer";
@@ -30,7 +31,8 @@ yargs
       });
       yargs.positional("rewrite", {
         type: "boolean",
-        describe: "if the flag is specified, than outputFile (if exists) will be rewritten",
+        describe:
+          "if the flag is specified, than outputFile (if exists) will be rewritten",
       });
     },
     (argv) => {
@@ -75,18 +77,20 @@ yargs
         return;
       }
 
-			if(argv.outputFile) {
-				const outputFile = <string>argv.outputFile;
+      if (argv.outputFile) {
+        const outputFile = <string>argv.outputFile;
 
-				if(fs.existsSync(outputFile) && !argv.rewrite) {
-					console.log("The output file with specified name already exists. If you want to rewrite it, please run the program with --rewrite flag");	
-					return;
-				}
-			}
+        if (fs.existsSync(outputFile) && !argv.rewrite) {
+          console.log(
+            "The output file with specified name already exists. If you want to rewrite it, please run the program with --rewrite flag"
+          );
+          return;
+        }
+      }
 
       const algorithmFileContents = fs.readFileSync(fileName).toString();
 
-			let algorithm: Algorithm;
+      let algorithm: Algorithm;
 
       try {
         algorithm = parseAlgorithm(algorithmFileContents);
@@ -95,13 +99,25 @@ yargs
         return;
       }
 
-      const operationsResult = executeAlgorithm(inputContents, algorithm);
+			const startTime = performance.now();
 
-			if(argv.outputFile) {
-				fs.writeFileSync(<string>argv.outputFile, operationsResult);
-			} else {
-				console.log("Result: \n" + operationsResult);
-			}
+      const algorithmResult = executeAlgorithm(inputContents, algorithm);
+
+			const endTime = performance.now();
+
+			const executionTime = endTime - startTime;
+
+			console.log("Executed successfully in " + executionTime.toFixed(4) + "ms");
+			console.log("Steps count: " + algorithmResult.stepsCount);
+
+      if (argv.outputFile) {
+				const outputFilePath = <string>argv.outputFile;
+
+        fs.writeFileSync(outputFilePath, algorithmResult.outputString);
+				console.log("Output has been written to " + outputFilePath);
+      } else {
+        console.log("Output: \n" + algorithmResult.outputString);
+      }
     }
   )
   .help().argv;
