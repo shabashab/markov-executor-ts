@@ -99,20 +99,22 @@ yargs
         return;
       }
 
-			let algorithmResult!: AlgorithmExecutionResult;
+      let algorithmResult!: AlgorithmExecutionResult;
 
-			const executionTime = measureExecutionTime(() => {
-				 algorithmResult = executeAlgorithm(inputContents, algorithm);
-			});
+      const executionTime = measureExecutionTime(() => {
+        algorithmResult = executeAlgorithm(inputContents, algorithm);
+      });
 
-			console.log("Executed successfully in " + executionTime.toFixed(4) + "ms");
-			console.log("Steps count: " + algorithmResult.stepsCount);
+      console.log(
+        "Executed successfully in " + executionTime.toFixed(4) + "ms"
+      );
+      console.log("Steps count: " + algorithmResult.stepsCount);
 
       if (argv.outputFile) {
-				const outputFilePath = <string>argv.outputFile;
+        const outputFilePath = <string>argv.outputFile;
 
         fs.writeFileSync(outputFilePath, algorithmResult.outputString);
-				console.log("Output has been written to " + outputFilePath);
+        console.log("Output has been written to " + outputFilePath);
       } else {
         console.log("Output: \n" + algorithmResult.outputString);
       }

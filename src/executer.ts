@@ -2,8 +2,8 @@ import { Operation } from "./operation";
 import { Algorithm } from "./algorithm";
 
 export interface AlgorithmExecutionResult {
-	stepsCount: number;
-	outputString: string;
+  stepsCount: number;
+  outputString: string;
 }
 
 const executeOperation = (input: string, operation: Operation): string => {
@@ -17,8 +17,7 @@ const executeOperations = (
   output: string;
   continueLoop: boolean;
 } => {
-
-	let output = input;
+  let output = input;
   let continueLoop = false;
 
   for (const operation of operations) {
@@ -28,9 +27,9 @@ const executeOperations = (
     if (!operationSucceeded) continue;
 
     output = operationResult;
-		continueLoop = !operation.isFinal;
+    continueLoop = !operation.isFinal;
 
-		break;
+    break;
   }
 
   return {
@@ -46,20 +45,20 @@ export const executeAlgorithm = (
   const operations = algorithm.operations;
   let data: string = input;
 
-	let stepsCount = 0;
+  let stepsCount = 0;
 
   for (let continueLoop = true; continueLoop; stepsCount++) {
     const operationsResult = executeOperations(data, operations);
-		continueLoop = operationsResult.continueLoop;
+    continueLoop = operationsResult.continueLoop;
 
-		const output = operationsResult.output;
+    const output = operationsResult.output;
 
-		if(output == data) break;
+    if (output == data) break;
     data = output;
   }
 
   return {
-		stepsCount,
-		outputString: data
-	};
+    stepsCount,
+    outputString: data,
+  };
 };

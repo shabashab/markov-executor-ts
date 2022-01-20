@@ -18,26 +18,41 @@ const createStartOfWordRegExp = (from: string): RegExp => {
   return new RegExp("^" + regexpContent);
 };
 
-const replaceSpecialCharacters = (input: string, specialCharacters: string[]) => {
-	let outputString = "";
+const replaceSpecialCharacters = (
+  input: string,
+  specialCharacters: string[]
+) => {
+  let outputString = "";
 
-	for(const inputChar of input) {
-		if(specialCharacters.find(value => value == inputChar) !== undefined) {
-			outputString += "\\";
-		}
+  for (const inputChar of input) {
+    if (specialCharacters.find((value) => value == inputChar) !== undefined) {
+      outputString += "\\";
+    }
 
-		outputString += inputChar;
-	}
+    outputString += inputChar;
+  }
 
   return outputString;
-}
+};
 
 const replaceRegexSpecialChars = (input: string): string => {
-	const regexSpecialCharacters = [ 
-		".", "+", "?", "*", "^", "{", "}", "[", "]", "(", ")", "|", "\\"
-	];
-	
-	return replaceSpecialCharacters(input, regexSpecialCharacters);
+  const regexSpecialCharacters = [
+    ".",
+    "+",
+    "?",
+    "*",
+    "^",
+    "{",
+    "}",
+    "[",
+    "]",
+    "(",
+    ")",
+    "|",
+    "\\",
+  ];
+
+  return replaceSpecialCharacters(input, regexSpecialCharacters);
 };
 
 const createOperationInputRegex = (input: string): RegExp => {
